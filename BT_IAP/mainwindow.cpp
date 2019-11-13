@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->UpdateCancel, SIGNAL(clicked(bool)), this, SLOT(OnClickedUpdateCancel()));
     //connect( ui->hexSend, SIGNAL(toggled(bool)), this, SLOT(OnCheckHexSend()));
     connect( ui->SearchPort, SIGNAL(clicked(bool)), this, SLOT(OnClickedSearchPort()));
-    connect( &m_serialPort, SIGNAL(bytesWritten(qint64)), this, SLOT(TimerReset()));
     connect( &count, SIGNAL(timeout()), this, SLOT(SendAPart()));    
     port_list = GetPortList();
     if(!port_list.isEmpty())
@@ -135,11 +134,9 @@ void MainWindow::OnClickedUpdate()
         }
         //qDebug() <<"file is follow:\r\n"<< file_array.toHex();
         ui->TranscationScr->append("please wait......");
+        connect( &m_serialPort, SIGNAL(bytesWritten(qint64)), this, SLOT(TimerReset()));
         SendInfo_ProgressBar(file_array);
         file_array.clear();
-        //num = m_serialPort.bytesToWrite();
-
-        //qDebug() <<"num:"<< num;
 
     }
     else
@@ -386,7 +383,7 @@ void MainWindow::SendInfo()
     QByteArray info_arry =info.toLatin1();
     QByteArray infos ;
     int length;
-    if(info.length() == 0) return;
+    if(info.length() == 0 && !m_serialPort.isOpen()) return;
     if(ui->hexSend->checkState())
     {
         infos = info_arry.toHex();
@@ -464,6 +461,7 @@ void MainWindow::SendAPart()
         progress_value = 0.0;
         current_num = 1;
         ui->progressBar->setValue(100);
+        disconnect(&m_serialPort, SIGNAL(bytesWritten(qint64)), this, SLOT(TimerReset()));
         ui->TranscationScr->append("finished!");
     }
 }
@@ -510,3 +508,32 @@ void MainWindow::TimerReset()
 
 
 
+void MainWindow::on_CheckOnline_clicked()
+{
+    QByteArray comd = "C|C|ON?";
+    QByteArray ack;
+    m_serialPort.write(comd);
+    if(!m_serialPort.isOpen())
+    {
+        return;
+    }
+    if(!m_serialPort.waitForReadyRead(500))
+    {
+        qDebug() << "time out" << "no device";
+    }
+    else
+    {
+        ack = m_serialPort.readAll();
+        if(ack == "A|C|ON!")
+        {
+            qDebug() << "Device ok!";
+            ui->CheckOnline->setText("IAP Online");
+            ui->CheckOnline->setStyleSheet("QTextEdit{background-color: rgb(170, 85, 0)}");
+        }
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
+}

@@ -69,6 +69,11 @@ public:
 
 
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_CheckOnline_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSerialPort m_serialPort;

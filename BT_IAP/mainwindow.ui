@@ -521,7 +521,7 @@ p, li { white-space: pre-wrap; }
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="2,2,2,10">
       <item>
        <widget class="QPushButton" name="UpdateCode">
         <property name="font">
@@ -547,6 +547,25 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>取消</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="CheckOnline">
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(170, 85, 0);
+color: rgb(255, 255, 255);
+</string>
+        </property>
+        <property name="text">
+         <string>IAP检测离线</string>
         </property>
        </widget>
       </item>
