@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->UpdateCancel, SIGNAL(clicked(bool)), this, SLOT(OnClickedUpdateCancel()));
     //connect( ui->hexSend, SIGNAL(toggled(bool)), this, SLOT(OnCheckHexSend()));
     connect( ui->SearchPort, SIGNAL(clicked(bool)), this, SLOT(OnClickedSearchPort()));
-    connect( &count, SIGNAL(timeout()), this, SLOT(SendAPart()));    
+
     port_list = GetPortList();
     if(!port_list.isEmpty())
         ui->SerialPort->removeItem(0);
@@ -73,6 +73,8 @@ void MainWindow::OnClickedConnect()
         ui->VerifyBit->setDisabled(1);
         SetDevStateText("设备连接成功");
         SetDevStateStyle("background-color: rgb(255, 204, 121)");
+        //cheack_port_online.start(200);
+        //connect( &cheack_port_online, SIGNAL(timeout()), this, SLOT(checkDevOnline()));
     }
 
 }
@@ -87,6 +89,8 @@ void MainWindow::OnClickedDisconnect()
     ui->StopBit->setDisabled(0);
     ui->VerifyBit->setDisabled(0);
     m_serialPort.close();
+    cheack_port_online.stop();
+    count.stop();
     SetDevStateText("等待设备连接");
     SetDevStateStyle("background-color: rgb(255, 255, 255)");
 }
@@ -104,7 +108,7 @@ void MainWindow::OnClickedChooseFile()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("文件对话框！"),
                                                      "F:",
-                                                     tr("烧录文件(*txt *bin *o *exe);;"
+                                                     tr("烧录文件(*txt *bin *hex);;"
                                                         "所有文件(*)"));
      qDebug()<<"filename : "<<fileName;
      ui->FilePath->setText(fileName);
@@ -134,7 +138,9 @@ void MainWindow::OnClickedUpdate()
         }
         //qDebug() <<"file is follow:\r\n"<< file_array.toHex();
         ui->TranscationScr->append("please wait......");
+        connect( &count, SIGNAL(timeout()), this, SLOT(SendAPart()));
         connect( &m_serialPort, SIGNAL(bytesWritten(qint64)), this, SLOT(TimerReset()));
+        ui->UpdateCode->setDisabled(1);
         SendInfo_ProgressBar(file_array);
         file_array.clear();
 
@@ -149,8 +155,11 @@ void MainWindow::OnClickedUpdate()
 
 void MainWindow::OnClickedUpdateCancel()
 {
+    ACK = - ACK_TIMEOUT - 2;
     qDebug() << "cancel the update task" << endl;
-    //count.start(200);
+    //C:command,R:resend, 1:enable
+    m_serialPort.write("C|R|1!\xff");
+    ui->UpdateCode->setDisabled(0);
 }
 
 void MainWindow::OnClickedSearchPort()
@@ -366,7 +375,7 @@ bool MainWindow::OpenSerial(QString com, QVariant Sbaud, QVariant SDataBit, QStr
         qDebug() << "readble";
     }
 
-    //connect( &m_serialPort, SIGNAL(readyRead()), this, SLOT(receiveInfo()));
+    //connect( &m_serialPort, SIGNAL(readyRead()), this, SLOT(receiveInfo()));   
     QObject::connect( &m_serialPort, &QSerialPort::readyRead, this, &MainWindow::receiveInfo);
     return true;
 }
@@ -374,7 +383,24 @@ bool MainWindow::OpenSerial(QString com, QVariant Sbaud, QVariant SDataBit, QStr
 void MainWindow::receiveInfo()
 {
     QByteArray info = m_serialPort.readAll();
+    static QByteArray ackBuf;
     ui->TranscationScr->insertPlainText(info);
+    //receive a ack head,saving.
+    if(!part_list.isEmpty())
+    {
+        if(info[0] == 'A' | ackBuf[0] == 'A')
+        {
+            //qDebug() << "1";
+            ackBuf.append(info);
+        }
+        if((ackBuf.length() == 8) && (ackBuf[7] == 0xff))
+        {
+            //qDebug() << "2";
+            //qDebug() << "ACK:" << info.toHex();
+            ACK = 1;
+            ackBuf.clear();
+        }
+    }
 }
 
 void MainWindow::SendInfo()
@@ -444,38 +470,79 @@ void MainWindow::SendInfo()
 void MainWindow::SendAPart()
 {
     static int current_num = 1;
+    static int last_num = 1;
+    static int resend_time = 0;
     //qDebug() <<"send a part";
+    //receiver a ACK & resend
+    //ACK = 0 is noack, ACK[0,-ACK_TIMEOUT(-7)] is wait ack, ack = -10 is cancle.
+    if( ACK <= 0 && ACK > -ACK_TIMEOUT)
+    {
+        qDebug() << "wait ACK:" << ACK ;
+        ACK--;
+        if(ACK <= -ACK_TIMEOUT)         //time out resend
+        {
+            current_num--;
+            resend_time++;
+            //ACK = 1;
+            qDebug() << "time out ,resend:"<< resend_time<<"!";
+        }
+        count.start(200);
+        return ;
+    }
+    //press cancle button and resend time out
+    else if(ACK + ACK_TIMEOUT == -2 | resend_time > 5)
+    {
+        current_num = part_num +1;
+        ACK = -11;
+        qDebug() << "cancle"<<"ACK:" <<ACK<<"resend_time:"<< resend_time <<endl;
+        ui->TranscationScr->append("sending was cancled!");
+    }
+    else if(ACK == 1)
+    {
+        qDebug() << "ACK!" << "send next";
+        resend_time = 0;
+    }
     count.stop();
-    ui->progressBar->setValue(progress_value+=each_part_bar);
     //qDebug()<< "current part" << current_num << "part length" <<part_num ;
     if(current_num < part_num){
-        m_serialPort.write(part_list[current_num]);
+        if(ui->PackData->checkState())
+        {
+            ACK = 0;
+            qDebug() <<"send part["<< part_num << "/"<< current_num << "]" <<endl;
+            m_serialPort.write(iap_pack.IapPack(&part_list[current_num], part_num, current_num, part_list[current_num].length(), &crc));
+            ui->progressBar->setValue(each_part_bar*current_num);
+        }
+        else m_serialPort.write(part_list[current_num]);
         current_num++;
     }
     else
     {
         count.stop();
+        qDebug() << "end this transation!" <<endl;
         part_num = 0;
         each_part_bar = 0;
         part_list.clear();
         progress_value = 0.0;
         current_num = 1;
+        resend_time = 0;
         ui->progressBar->setValue(100);
+        disconnect( &count, SIGNAL(timeout()), this, SLOT(SendAPart()));
         disconnect(&m_serialPort, SIGNAL(bytesWritten(qint64)), this, SLOT(TimerReset()));
+        ui->UpdateCode->setDisabled(0);
         ui->TranscationScr->append("finished!");
+        m_serialPort.write("C|R|1!\xff");
     }
 }
 
 void MainWindow::SendInfo_ProgressBar(QByteArray info_arry)
 {
-
     part_num = info_arry.length()/a_part_size + 1;
     each_part_bar = 100.0/(double)part_num;
     int num_ready_send;
     qDebug()<<"this data has :" << info_arry.length() << "could divide:" << part_num << "each part" << each_part_bar;
     if(!part_list.isEmpty())
     {
-        qDebug()<< "not empty," << part_list;
+        //qDebug()<< "not empty," << part_list;
     }
     for(int part = 0; part < part_num; part++)
     {
@@ -483,7 +550,14 @@ void MainWindow::SendInfo_ProgressBar(QByteArray info_arry)
         //qDebug()<< "part"<<part;
     }
     //qDebug()<<"list" << part_list;
-    m_serialPort.write(part_list[0]);
+    if(ui->PackData->checkState())
+    {
+        ACK = 0;
+        qDebug() <<"send part["<< "0" << "]" <<endl;
+        m_serialPort.write(iap_pack.IapPack(&part_list[0], part_num, 0, a_part_size, &crc));
+    }
+    else m_serialPort.write(part_list[0]);
+    count.start(200);
     num_ready_send = m_serialPort.bytesToWrite();
     info_arry.clear();
     qDebug() <<"num:"<< num_ready_send;
@@ -492,6 +566,16 @@ void MainWindow::SendInfo_ProgressBar(QByteArray info_arry)
 void MainWindow::myQdebug(QString text)
 {
     ui->debug_winds->append(text);
+}
+
+void MainWindow::checkDevOnline()
+{
+    qDebug() <<"check device whther device online" << endl;
+    cheack_port_online.start(1000);
+    if(m_serialPort.isBreakEnabled())
+    {
+        qDebug() <<"ok!" << endl;
+    }
 }
 
 void MainWindow::ChangeProgressBar(qint64 num)
@@ -510,7 +594,7 @@ void MainWindow::TimerReset()
 
 void MainWindow::on_CheckOnline_clicked()
 {
-    QByteArray comd = "C|C|ON?";
+    QByteArray comd = "C|C|ON?\xff";
     QByteArray ack;
     m_serialPort.write(comd);
     if(!m_serialPort.isOpen())
@@ -524,7 +608,7 @@ void MainWindow::on_CheckOnline_clicked()
     else
     {
         ack = m_serialPort.readAll();
-        if(ack == "A|C|ON!")
+        if(ack == "A|C|ON!\xff")
         {
             qDebug() << "Device ok!";
             ui->CheckOnline->setText("IAP Online");

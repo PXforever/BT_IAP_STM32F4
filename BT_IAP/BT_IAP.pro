@@ -8,6 +8,7 @@ QT       += core gui
 QT       += serialport
 QT       +=widgets
 QT       += gui core widgets
+RC_ICONS = icon_iap.ico
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,14 +32,17 @@ SOURCES += \
         mainwindow.cpp \
     btlink.cpp \
     iap.cpp \
-    mythread.cpp
+    mythread.cpp \
+    iappackages.cpp
 
 HEADERS += \
         mainwindow.h \
     btlink.h \
     iap.h \
-    mythread.h
+    mythread.h \
+    iappackages.h
 
 FORMS += \
-        mainwindow.ui \
-    debugform.ui
+        mainwindow.ui
+
+DISTFILES +=

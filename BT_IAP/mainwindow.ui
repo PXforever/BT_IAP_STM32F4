@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string> BT IAP</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -53,8 +53,17 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="20,1,10,1,1,10,20,10,20">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QPushButton" name="ClearDisBtn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -67,6 +76,23 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>debug</string>
         </property>
@@ -507,6 +533,23 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="PackData">
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>pack</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="ChooseFile">
         <property name="font">
          <font>
@@ -614,8 +657,12 @@ color: rgb(0, 0, 0);</string>
    </property>
    <widget class="QMenu" name="menuIAP">
     <property name="title">
-     <string>IAP</string>
+     <string>文件</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="action99"/>
+    <addaction name="separator"/>
+    <addaction name="actionl"/>
    </widget>
    <addaction name="menuIAP"/>
   </widget>
@@ -628,6 +675,16 @@ color: rgb(0, 0, 0);</string>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action99">
+   <property name="text">
+    <string>保存</string>
+   </property>
+  </action>
+  <action name="actionl">
+   <property name="text">
+    <string>另存为</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

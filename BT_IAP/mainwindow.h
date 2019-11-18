@@ -13,8 +13,10 @@
 #include <QFile>
 #include <QTimer>
 #include <QPlainTextEdit>
+#include "iappackages.h"
 
 extern sem_t open_serial;
+#define ACK_TIMEOUT 8
 
 namespace Ui {
 class MainWindow;
@@ -41,6 +43,7 @@ public slots:
     void ChangeProgressBar(qint64 num);
     void TimerReset();
     void SendAPart();
+    void checkDevOnline();
 
 
 public:
@@ -67,22 +70,26 @@ public:
     void myQdebug(QString text);
 
 
-
-
 private slots:
     void on_pushButton_clicked();
 
     void on_CheckOnline_clicked();
 
+public:
+    QByteArray crc = "";
+
 private:
     Ui::MainWindow *ui;
     QSerialPort m_serialPort;
     QTimer count ;
+    QTimer cheack_port_online ;
     int part_num;
     QList<QByteArray> part_list;
     double progress_value = 0.0;
     double each_part_bar;
     int a_part_size = 1024;
+    IapPackages iap_pack;
+    int ACK = 0;
     //MyThread *thread1;
 
 };
