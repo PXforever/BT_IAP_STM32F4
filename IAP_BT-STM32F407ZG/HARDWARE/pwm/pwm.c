@@ -1,0 +1,54 @@
+#include "sys.h"
+#include "pwm.h"
+
+void TIM5_PWM_Init(u32 arr,u32 psc)
+{
+
+	RCC->APB1ENR|=1<<3; 	//TIM5时钟使能    
+	RCC->AHB1ENR|=1<<0;   	//使能PORTA时钟	
+	GPIO_Set(GPIOA,PIN1|PIN2|PIN3,GPIO_MODE_AF,GPIO_OTYPE_PP,GPIO_SPEED_100M,GPIO_PUPD_PU);//PIN0||PIN3
+	//GPIO_AF_Set(GPIOA,0,2);	
+	GPIO_AF_Set(GPIOA,1,2);	
+	GPIO_AF_Set(GPIOA,2,2);
+	//GPIO_AF_Set(GPIOA,3,2);
+	TIM5->ARR=arr;
+	TIM5->PSC=psc;
+	TIM5->CCMR1|=13<<3;
+	TIM5->CCMR1|=13<<11;
+	TIM5->CCMR2|=13<<3;
+	TIM5->CCMR2|=13<<11;
+	TIM5->CCER|=1<<0;
+	TIM5->CCER|=1<<4;	
+	TIM5->CCER|=1<<8;	
+	TIM5->CCER|=1<<12;	
+	TIM5->CR1|=1<<7; 
+	TIM5->CR1|=1<<0;
+	TIM5->CR1&=~(1<<4);
+
+}
+
+void TIM8_PWM_Init(u32 arr,u32 psc)
+{
+	RCC->APB2ENR|=1<<1;//TIM8时钟使能
+	RCC->AHB1ENR|=1<<2;//使能PORTC时钟
+	GPIO_Set(GPIOC,PIN6|PIN7|PIN8|PIN9,GPIO_MODE_AF,GPIO_OTYPE_PP,GPIO_SPEED_100M,GPIO_PUPD_PU);
+	GPIO_AF_Set(GPIOC,6,3);	
+	GPIO_AF_Set(GPIOC,7,3);	
+	GPIO_AF_Set(GPIOC,8,3);
+	GPIO_AF_Set(GPIOC,9,3);
+	TIM8->ARR=arr;
+	TIM8->PSC=psc;
+	TIM8->CR1|=1<<0;
+	TIM8->CR1|=1<<7;
+	TIM8->CR1&=~(1<<4);
+	TIM8->CCMR1|=13<<3;
+	TIM8->CCMR1|=13<<11;
+	TIM8->CCMR2|=13<<3;
+	TIM8->CCMR2|=13<<11;
+	TIM8->CCER|=1<<0;
+	TIM8->CCER|=1<<4;	
+	TIM8->CCER|=1<<8;	
+	TIM8->CCER|=1<<12;
+	TIM8->BDTR|=1<<15;	
+}
+
