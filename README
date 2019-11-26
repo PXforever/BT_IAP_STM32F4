@@ -21,8 +21,8 @@ using a Qt  app as a service and STM32  as a client ,update program of stm32
 |--------------------|E                       E| R|                           		|
 												 T|---------------------------------|
 #software tools
-QTcreator
-keil IDE
+1.QTcreator
+2.keil IDE
 												 
 
 #configuration 
