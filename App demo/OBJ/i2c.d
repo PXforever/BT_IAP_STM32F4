@@ -1,0 +1,11 @@
+..\obj\i2c.o: ..\Hardware\i2c\i2c.c
+..\obj\i2c.o: ..\system\sys\sys.h
+..\obj\i2c.o: ..\system\sys\stm32f4xx.h
+..\obj\i2c.o: ..\system\sys\core_cm4.h
+..\obj\i2c.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\i2c.o: ..\system\sys\core_cmInstr.h
+..\obj\i2c.o: ..\system\sys\core_cmFunc.h
+..\obj\i2c.o: ..\system\sys\core_cm4_simd.h
+..\obj\i2c.o: ..\system\sys\system_stm32f4xx.h
+..\obj\i2c.o: ..\Hardware\i2c\i2c.h
+..\obj\i2c.o: ..\system\delay\delay.h

@@ -1,0 +1,13 @@
+..\obj\mian.o: mian.c
+..\obj\mian.o: D:\keil\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\mian.o: ..\Hardware\i2c\i2c.h
+..\obj\mian.o: ..\system\delay\delay.h
+..\obj\mian.o: ..\system\sys\sys.h
+..\obj\mian.o: ..\system\sys\stm32f4xx.h
+..\obj\mian.o: ..\system\sys\core_cm4.h
+..\obj\mian.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\mian.o: ..\system\sys\core_cmInstr.h
+..\obj\mian.o: ..\system\sys\core_cmFunc.h
+..\obj\mian.o: ..\system\sys\core_cm4_simd.h
+..\obj\mian.o: ..\system\sys\system_stm32f4xx.h
+..\obj\mian.o: ..\system\usart\usart.h

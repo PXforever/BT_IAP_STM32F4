@@ -1,0 +1,56 @@
+Dependencies for Project 'pro', Target 'Target 1': (DO NOT MODIFY !)
+F (.\mian.c)(0x5DD281DB)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\system\delay -I..\system\sys -I..\system\usart -I..\system\sys -I..\Hardware\i2c-I C:\Users\Dell\Desktop\demo\USER\RTE-I D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I D:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx-o ..\obj\mian.o --omf_browse ..\obj\mian.crf --depend ..\obj\mian.d)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (..\Hardware\i2c\i2c.h)(0x5DD23CAA)
+I (..\system\delay\delay.h)(0x555D4A36)
+I (..\system\sys\sys.h)(0x555D4ABD)
+I (..\system\sys\stm32f4xx.h)(0x53DBA488)
+I (..\system\sys\core_cm4.h)(0x53C7D530)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (..\system\sys\core_cmInstr.h)(0x53C7D530)
+I (..\system\sys\core_cmFunc.h)(0x53C7D530)
+I (..\system\sys\core_cm4_simd.h)(0x53C7D530)
+I (..\system\sys\system_stm32f4xx.h)(0x53DBA499)
+I (..\system\usart\usart.h)(0x5528CC5B)
+F (.\startup_stm32f40_41xxx.s)(0x5DCE91B2)(--cpu Cortex-M4.fp -g --apcs=interwork -I C:\Users\Dell\Desktop\demo\USER\RTE-I D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I D:\keil\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 514" --pd "STM32F407xx SETA 1"--list .\listings\startup_stm32f40_41xxx.lst --xref -o ..\obj\startup_stm32f40_41xxx.o --depend ..\obj\startup_stm32f40_41xxx.d)
+F (..\system\delay\delay.c)(0x55BF04B1)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\system\delay -I..\system\sys -I..\system\usart -I..\system\sys -I..\Hardware\i2c-I C:\Users\Dell\Desktop\demo\USER\RTE-I D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I D:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx-o ..\obj\delay.o --omf_browse ..\obj\delay.crf --depend ..\obj\delay.d)
+I (..\system\delay\delay.h)(0x555D4A36)
+I (..\system\sys\sys.h)(0x555D4ABD)
+I (..\system\sys\stm32f4xx.h)(0x53DBA488)
+I (..\system\sys\core_cm4.h)(0x53C7D530)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (..\system\sys\core_cmInstr.h)(0x53C7D530)
+I (..\system\sys\core_cmFunc.h)(0x53C7D530)
+I (..\system\sys\core_cm4_simd.h)(0x53C7D530)
+I (..\system\sys\system_stm32f4xx.h)(0x53DBA499)
+F (..\system\sys\sys.c)(0x5528CA85)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\system\delay -I..\system\sys -I..\system\usart -I..\system\sys -I..\Hardware\i2c-I C:\Users\Dell\Desktop\demo\USER\RTE-I D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I D:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx-o ..\obj\sys.o --omf_browse ..\obj\sys.crf --depend ..\obj\sys.d)
+I (..\system\sys\sys.h)(0x555D4ABD)
+I (..\system\sys\stm32f4xx.h)(0x53DBA488)
+I (..\system\sys\core_cm4.h)(0x53C7D530)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (..\system\sys\core_cmInstr.h)(0x53C7D530)
+I (..\system\sys\core_cmFunc.h)(0x53C7D530)
+I (..\system\sys\core_cm4_simd.h)(0x53C7D530)
+I (..\system\sys\system_stm32f4xx.h)(0x53DBA499)
+F (..\system\usart\usart.c)(0x5528CD6F)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\system\delay -I..\system\sys -I..\system\usart -I..\system\sys -I..\Hardware\i2c-I C:\Users\Dell\Desktop\demo\USER\RTE-I D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I D:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx-o ..\obj\usart.o --omf_browse ..\obj\usart.crf --depend ..\obj\usart.d)
+I (..\system\sys\sys.h)(0x555D4ABD)
+I (..\system\sys\stm32f4xx.h)(0x53DBA488)
+I (..\system\sys\core_cm4.h)(0x53C7D530)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (..\system\sys\core_cmInstr.h)(0x53C7D530)
+I (..\system\sys\core_cmFunc.h)(0x53C7D530)
+I (..\system\sys\core_cm4_simd.h)(0x53C7D530)
+I (..\system\sys\system_stm32f4xx.h)(0x53DBA499)
+I (..\system\usart\usart.h)(0x5528CC5B)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5475F300)
+F (..\Hardware\i2c\i2c.c)(0x5DD24057)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I..\system\delay -I..\system\sys -I..\system\usart -I..\system\sys -I..\Hardware\i2c-I C:\Users\Dell\Desktop\demo\USER\RTE-I D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I D:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx-o ..\obj\i2c.o --omf_browse ..\obj\i2c.crf --depend ..\obj\i2c.d)
+I (..\system\sys\sys.h)(0x555D4ABD)
+I (..\system\sys\stm32f4xx.h)(0x53DBA488)
+I (..\system\sys\core_cm4.h)(0x53C7D530)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (..\system\sys\core_cmInstr.h)(0x53C7D530)
+I (..\system\sys\core_cmFunc.h)(0x53C7D530)
+I (..\system\sys\core_cm4_simd.h)(0x53C7D530)
+I (..\system\sys\system_stm32f4xx.h)(0x53DBA499)
+I (..\Hardware\i2c\i2c.h)(0x5DD23CAA)
+I (..\system\delay\delay.h)(0x555D4A36)
