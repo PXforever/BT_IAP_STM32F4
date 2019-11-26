@@ -18,7 +18,7 @@ using a Qt  app as a service and STM32  as a client ,update program of stm32
 |					 |D	>>>>>>>>>>>>>>>>>>>>  D|  |                           		|
 |  APP code			 |U	--------------------- U| P|                           		|
 |0x8010000~0x80f0000 |L	              (HC05)  L| O|                           		|
-|--------------------|E                       E| R|                           		|
+|--------------------|E                       E| R|                           		|	
 												 T|---------------------------------|
 #software tools
 QTcreator
@@ -26,7 +26,7 @@ keil IDE
 												 
 
 #configuration 
-For application runing at specific flash address ,we need setup the flash address， In keil :
+For application runing at specific flash address ,we need setup the flash address In keil :
   project -> option for target -> Target -> read/Only memory Areas -> On chip ->IROM1:
   filling with :start-0x8010000	(keep Consistency whit ./IAP_BT-STM32F407ZG/IAP/iap.h line-17 :#define FLASH_APP1_ADDR		0x08010000)
 				size -oxf0000	(STM32F407ZG flash size(1024KB) - IAP region(64K) = (APP region)960K)
