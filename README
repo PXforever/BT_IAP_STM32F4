@@ -32,6 +32,32 @@ For application runing at specific flash address ,we need setup the flash addres
                 size -0xf0000	(STM32F407ZG flash size(1024KB) - IAP region(64K) = (APP region)960K)
 				
 & For application compliting a binary file, In keil:
-  project -> option for target -> USer -> After build /rebuild ,checking the first checkbox(Run #1), and filling:
+ -o  project -> option for target -> USer -> After build /rebuild ,checking the first checkbox(Run #1), and filling:
   D:\keil\ARM\ARMCC\bin\fromelf.exe --bin -o ..\OBJ\pro.bin ..\OBJ\pro.axf       -this is my path.
-  Your keil instaalling directory path\ARM\ARMCC\bin\fromelf.exe  --bin -o <You want create .bin at ?> <your .axf path>   	-this is your need set
+  Your keil instaalling directory path\ARM\ARMCC\bin\fromelf.exe  --bin <You want create .bin at ?> <your .axf path>   	-this is your need set
+
+#BT_IAP_STM32F4
+#主要功能
+使用一个Qt编写的app来通过蓝牙与STM32通信，实现iap更新程序。
+
+#文件夹介绍
+<./App demo> 		是一个模板app文件夹
+<./BT_IAP>		是Qt的源代码
+<./IAP_BT-STM32F407ZG>	是STM32f407的IAP程序代码
+
+#软件工具
+1.QTcreator
+2.keil IDE
+
+#配置
+为了让其能够在STM32制定代码区域运行，需要在代码中设置参数
+	project -> option for target -> Target -> read/Only memory Areas -> On chip ->IROM1:
+	filling with :start-0x8010000	(keep Consistency whit ./IAP_BT-STM32F407ZG/IAP/iap.h line-17 :#define FLASH_APP1_ADDR		0x08010000)
+                size -0xf0000	(STM32F407ZG flash size(1024KB) - IAP region(64K) = (APP region)960K)
+		
+&为了让keil编译出.bin文档,需要在选项设置参数：
+	project -> option for target -> USer -> After build /rebuild ,checking the first checkbox(Run #1), 填入:
+	D:\keil\ARM\ARMCC\bin\fromelf.exe --bin -o ..\OBJ\pro.bin ..\OBJ\pro.axf       -这是我的路径位置。
+	你的keil安装路径\ARM\ARMCC\bin\fromelf.exe  --bin <你想生成在？> <你的.axf 路径>   	-这是你的设置的路径
+
+
